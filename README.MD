@@ -21,7 +21,7 @@ git clone https://github.com/studev1922/f-tool.git
 ```
 3. Mở cmd (Command Prompt)
 ```
-cd [...]\f-tool && npm i
+cd f-tool && npm i
 ```
 ```
 npm start
