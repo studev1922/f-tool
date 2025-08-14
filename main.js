@@ -2,7 +2,7 @@ import os from 'node:os'
 import path from 'node:path';
 import { exec } from 'child_process';
 import { fileURLToPath } from 'node:url'
-import { drive, code, file, menu, util } from './src/modules/index.js';
+import { menu } from './src/modules/index.js';
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 import server from './src/server/server.js';
 
