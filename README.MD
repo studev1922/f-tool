@@ -14,6 +14,9 @@ node -v && npm -v
 ```
 2. Tải project [tải xuống](https://github.com/studev1922/f-tool/archive/refs/heads/master.zip) hoặc sử dụng `git`
 ```
+git -v
+```
+```
 git clone https://github.com/studev1922/f-tool.git
 ```
 3. Mở cmd (Command Prompt)
