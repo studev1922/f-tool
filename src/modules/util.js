@@ -1,7 +1,6 @@
 // npm i dotenv
-import dotenv from 'dotenv';
-
-const env = dotenv.config().parsed;
+// import dotenv from 'dotenv';
+// const env = dotenv.config().parsed;
 const txt = {
     /**
      * @param {String} t : text = "abc"
@@ -48,4 +47,4 @@ const pathValue = {
     shortcuts(e, t) { let f = []; return !function e(n) { if ("object" == typeof n && null !== n) { if (Array.isArray(n)) for (let i of n) e(i); else for (let l in t in n && f.push(n[t]), n) e(n[l]) } }(e), f }
 }
 
-export default { env, txt, path: pathValue }
+export default { /*env,*/ txt, path: pathValue }
