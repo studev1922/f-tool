@@ -14,4 +14,3 @@ res/*
 .test*
 *.log
 *.tmp
-.data/*

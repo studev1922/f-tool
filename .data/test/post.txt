@@ -1,0 +1,16 @@
+Đây là một tool miễn phí không nhằm mục đích thương mại, các bạn có thể xem tham khảo hoặc tùy ý chỉnh sửa
+
+File setup project & NodeJS, tải một trong hai thư mục dưới đây:
+ - File bat: [courage-exe.zip](http://drive.google.com/file/d/1OfakfoYJdAbzpEy_giy-TBB5BJs30jxH)
+ - File exe: [courage-bat.zip](https://drive.google.com/file/d/1rTGlmz5_hbCNMXtoIUvXoI7Qkwp9aTS8)
+
+Code project: https://github.com/studev1922/f-tool.git
+
+
+==========================================
+STATING...
++------------------+
+| 1: exit          |
+| 2: Start server  |
++------------------+
+Chọn chức năng (nhập số): 2
