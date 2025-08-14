@@ -4,8 +4,8 @@ ___Đây là một tool miễn phí không nhằm mục đích thương mại, c
 
 ## File setup project & NodeJS
 Tải một trong hai thư mục dưới đây:
- - File bat: [courage-exe.zip](http://drive.google.com/file/d/1OfakfoYJdAbzpEy_giy-TBB5BJs30jxH)
- - File exe: [courage-bat.zip](https://drive.google.com/file/d/1rTGlmz5_hbCNMXtoIUvXoI7Qkwp9aTS8)
+ - File bat: [courage-exe.zip](https://drive.google.com/file/d/1J_EOuEM75x5RF0uf1ZGM3NKRz5hvcSq8)
+ - File exe: [courage-bat.zip](https://drive.google.com/file/d/1K4x4DushXLrR7oSWOR0C5emPOWtfydb2)
 
 ## Nếu chạy trực tiếp với code này
 1. yêu cầu đã cài đặt NodeJS, kiểm tra
