@@ -1,7 +1,17 @@
-.accounts/
 node_modules/
 package-lock.json
+dist/
+build/
+coverage/
+npm-debug.log*
+yarn-error.log*
+nodemon.json
 
+session/*
+res/*
+.trash/*
+.accounts/
 .test*
 *.log
 *.tmp
+.data/*
