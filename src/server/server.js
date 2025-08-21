@@ -11,9 +11,10 @@ export default async (__dirname, port = 1922) => {
     const app = express();
 
     // Middleware
-    app.use(bodyParser.json());
-    app.use(cors());
     app.use(express.static('public'));
+    app.use(cors());
+    app.use(bodyParser.json());
+
 
     // Xử lý API
     file_manager(app, '/api', path.join(__dirname, '.data'));

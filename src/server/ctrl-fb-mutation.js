@@ -157,7 +157,7 @@ export default async (app, __dirname) => {
                 .map(item => path.join(folder, item.name));
 
             let response = await photo.upload_images(u, imageFiles, 'photo')
-            fs.writeFileSync('.test.json', JSON.stringify({ f, u, imageFiles, response }, null, 2));
+            // fs.writeFileSync('.test.json', JSON.stringify({ f, u, imageFiles, response }, null, 2));
             return res.status(200).json(response) // 
         } catch (err) {
             console.error(err);
@@ -168,11 +168,24 @@ export default async (app, __dirname) => {
     app.route(`${api}/post-mutation`).post(async (req, res) => {
         const { message, attachments, u } = req.body;
         console.log(req.body);
-        
+
         let result = await fbCtrl.postMutation('24163581963251290', u, fbVariables.all(u.nes.__user, message, attachments))
         // fs.writeFileSync('.test-post.json', JSON.stringify(result.data, null, 2));
         return res.status(200).json(result.data);
     })
 
+    app.route(`${api}/group-feed`).post(async (req, res) => {
+        const { u } = req.body;
+        console.log(u.cookie);
+        
+        const request = async _ => {
+            let result = await axios.get('https://www.facebook.com/groups/feed', {
+                headers: { 'accept': "text/html", 'Cookie': u.cookie },
+            })
+            fs.writeFileSync('.test-query.html', result.data);
+            return result.data;
+        }
+        return res.status(200).send(await request())
+    })
     file_manager(app, api, path.join(__dirname, '.data'));
 }

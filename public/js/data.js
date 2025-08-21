@@ -9,7 +9,7 @@ const data = {
             ["Mục khác", "#another-section"]
         ]],
         ["Tệp bài viết", fileManager.init],
-        ["Tài khoản", toolManage.accounts],
-        ["Post bài", toolManage.init]
+        ["Tài khoản", accountManage.init],
+        ["Post bài", postManage.init]
     ]
 }
