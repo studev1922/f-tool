@@ -3,9 +3,19 @@ import fs from 'node:fs';
 import path from 'node:path';
 import puppeteer from 'puppeteer';
 import file_manager from './file_api.js';
-import { code, file } from '../modules/index.js'
+import { code, file, menu } from '../modules/index.js'
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
+const defaultRelayData = await (async _ => {
+    try {
+        return await file.readAsJson('.accounts-relay_data/default.json')
+    } catch (e) {
+        return null
+    }
+})()
+menu.std.alert(defaultRelayData ? 'relay-data(Default)' : 'relay-data(Account)');
+
+
 export default async (app, __dirname) => {
     const api = '/ctrl-cookie';
     const fullPath = (e = "") => { let l = path.normalize(e).replace(/^(\.\.(\/|\\|$))+/, ""); return path.join(path.join(__dirname, '.accounts-relay_data'), l) };
@@ -26,8 +36,16 @@ export default async (app, __dirname) => {
         }
         await page.goto('https://www.facebook.com/me'); // redirect to personal's page
         try {
-            const { nes, username, replayData } = await page.evaluate(async _ => {
+            const { nes, username } = await page.evaluate(async _ => {
                 let __eqmc = () => { try { let t = JSON.parse(document.querySelector('#__eqmc').innerText); if (!t?.u) return { fb_dtsg: t.f }; let e = t.u.substring(10).split("&").map(t => t.split("=")); e.push(["fb_dtsg", t.f]); let r = Object.fromEntries(e); return delete r.jazoest, r } catch { return {} } };
+                return {
+                    nes: __eqmc(), username: (_ => {
+                        const match = document.body.innerHTML.match(/"userVanity":"(.*?)"/);
+                        return (match && match[1]) ? match[1] : null
+                    })(),
+                }
+            });
+            const relayData = defaultRelayData || await page.evaluate(async _ => {
                 let m = {
                     dataScript() { return Array.from(document.body.querySelectorAll("script")).map(r => { try { return JSON.parse(r.innerText) } catch (t) { return null } }).filter(Boolean) },
                     shortcuts(e, t) { let f = []; return !function e(n) { if ("object" == typeof n && null !== n) { if (Array.isArray(n)) for (let i of n) e(i); else for (let l in t in n && f.push(n[t]), n) e(n[l]) } }(e), f },
@@ -40,24 +58,18 @@ export default async (app, __dirname) => {
                         return { doc_ids, providedVariables };
                     }
                 }
-                return {
-                    nes: __eqmc(), username: (_ => {
-                        const match = document.body.innerHTML.match(/"userVanity":"(.*?)"/);
-                        return (match && match[1]) ? match[1] : null
-                    })(),
-                    replayData: await m._extractRelayOperationData(m.allSrc(), [
-                        'ComposerStoryCreateMutation', //story_create
-                        'ComposerStoryEditMutation', //story_edit
-                        'useCometTrashPostMutation', //move_to_trash_story
-                        'CometActivityLogItemCurationMutation' //activity_log_story_curation : DELETE item on trash
-                    ])
-                }
+                return await m._extractRelayOperationData(m.allSrc(), [
+                    'ComposerStoryCreateMutation', //story_create
+                    'ComposerStoryEditMutation', //story_edit
+                    'useCometTrashPostMutation', //move_to_trash_story
+                    'CometActivityLogItemCurationMutation' //activity_log_story_curation : DELETE item on trash
+                ])
             });
             if (!username) return res.status(401).json({ error: 'Cookie đã hết hạn hoặc không được duyệt.' });
 
             req.body.content = JSON.stringify({ cookie: req.body.content, nes });
             req.body.name = `${username}.json`
-            await file.writeAsJson(`.accounts-relay_data/${username}.json`, replayData)
+            await file.writeAsJson(`.accounts-relay_data/${username}.json`, relayData)
             await browser.close();
             next();
         } catch (error) {
@@ -67,13 +79,9 @@ export default async (app, __dirname) => {
         }
     });
 
+    // delete in .accounts-relay_data
     await app.route(`${api}/delete`).delete(async (req, res, next) => {
         const { items } = req.body;
-
-        if (!items || !Array.isArray(items) || items.length === 0) {
-            return res.status(400).json({ error: 'Vui lòng chọn các mục để xóa.' });
-        }
-
         try {
             const deletePromises = items.map(async (relativePath) => {
                 const itemPath = fullPath(relativePath);
@@ -86,10 +94,8 @@ export default async (app, __dirname) => {
             });
 
             await Promise.all(deletePromises);
-            res.json({ message: 'Các mục đã được xóa thành công.' });
         } catch (error) {
             console.error('Lỗi khi xóa mục:', error);
-            res.status(500).json({ error: 'Không thể xóa một hoặc nhiều mục.' });
         }
         next()
     });
