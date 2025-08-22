@@ -48,7 +48,8 @@ const photo = {
 }
 
 const fbVariables = {
-    provider: (location = 'timeline') => ({
+    renderVariables(e = { renderLocation: 'timeline', hashtag: null }) { let i = e.renderLocation || "timeline", a = { feedLocation: i.toUpperCase(), canUserManageOffers: !1, checkPhotosToReelsUpsellEligibility: !0, feedbackSource: 0, gridMediaWidth: 230, hashtag: null }; return Object.assign(a, { isEvent: "event" === i, isFeed: "homepage_stream" === i, isFundraiser: "fundraiser_page" === i, isFunFactPost: !1, isGroup: "group" === i, isPageNewsFeed: "pages_feed" === i, isProfileReviews: "PAGE_SURFACE_RECOMMENDATIONS" === a.feedLocation, isSocialLearning: "group_units" === i, isTimeline: "timeline" === i || "bizweb_self_view" === i, isWorkSharedDraft: !1, privacySelectorRenderLocation: "COMET_STREAM", renderLocation: i, scale: 1 }, e) } 
+    , provider: (location = 'timeline') => ({
         "feedLocation": location.toUpperCase(),
         "feedbackSource": 0,
         "focusCommentID": null,

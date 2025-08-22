@@ -246,18 +246,17 @@ const accountManage = {
     // },
 
     async createFile() {
-        let e = prompt("Dán cookie tài khoản facebook của bạn:");
+        let loadingId, e = prompt("Dán cookie tài khoản facebook của bạn:");
         // if (!checkCookie(e)) {
         //     notify.notifyAction(`${e}\nKHÔNG ĐÚNG ĐỊNH DẠNG COOKIE`, "danger")
         //     return
         // }
 
         if (e) {
-            fetch("/ctrl-cookie/create/file", {
+            loadingId = notify.showNotification("Đang gửi yêu cầu dữ liệu...", { type: "info", loading: true, sticky: true });
+            await fetch("/ctrl-cookie/create/file", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     // name: '',
                     content: e,
@@ -265,6 +264,9 @@ const accountManage = {
                 })
             }).then(e => e.json()).then(e => {
                 notify.notifyAction(e.message || e.error, e.success ? "success" : "warning"), accountManage.loadFiles(accountManage.currentPath)
+            }).finally(_ => {
+                notify.hideNotification(loadingId)
+                notify.notifyAction('Đã lấy doc_ids, relayOparationData, __eqmc', 'success')
             })
         }
     },

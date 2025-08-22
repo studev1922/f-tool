@@ -11,6 +11,7 @@ session/*
 res/*
 .trash/*
 .accounts/
+.accounts-relay_data/
 .test*
 *.log
 *.tmp
